@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const hiddenHeart = document.getElementById('hiddenHeart');
     const cursor = document.querySelector('.custom-cursor');
     const particlesContainer = document.querySelector('.particles');
-    const typingSubtitle = document.getElementById('typing-subtitle');
+    const typingSubtitle = document.getElementById('typing-subtitle'); // Pega o novo <p>
 
     // --- Otimização: Detecta se o dispositivo é mobile (touch) ou desktop (mouse) ---
     const isDesktop = window.matchMedia("(pointer: fine)").matches;
@@ -70,6 +70,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 container.style.opacity = '1';
             }
         }, 100);
+        // Inicia o typing mesmo se o botão falhar (após um pequeno delay)
+        setTimeout(() => {
+            startTypingEffect();
+        }, 1000);
     }
 
     // --- 2. Cursor Personalizado (SÓ ATIVA EM DESKTOP) ---
@@ -138,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 5. Easter Egg: Triplo Clique (MODO ROMÂNTICO) ---
+    // --- 5. Easter Egg: Triplo Clique (MODO ROMÂNTICO CORRIGIDO) ---
     let clickCount = 0;
     let clickTimer;
     
@@ -208,27 +212,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 const x = (mouseX - 0.5) * (2 * -1); // Invertido para efeito 3D
                 const y = (mouseY - 0.5) * (2 * -1);
                 
-                card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
-                
-                // Mantém a animação de flutuar (se houver)
-                if(card.classList.contains('photo-frame')) {
-                    card.style.animationName = 'frame-float';
-                } else {
-                    card.style.animationName = 'card-float';
-                }
+                // Aplica rotação e mantém animação
+                let currentTransform = card.style.transform.replace(/rotate[XY]\([^)]+\)/g, '').trim(); // Remove rotações antigas
+                card.style.transform = `${currentTransform} rotateY(${x}deg) rotateX(${y}deg)`;
             });
         });
 
-        // Reseta a transformação quando o mouse sai da janela
+        // Reseta a rotação quando o mouse sai da janela
         document.addEventListener('mouseleave', () => {
              const cards = document.querySelectorAll('.love-card, .photo-frame');
              cards.forEach(card => {
-                card.style.transform = 'rotateY(0deg) rotateX(0deg)';
-                if(card.classList.contains('photo-frame')) {
-                    card.style.animationName = 'frame-float';
-                } else {
-                    card.style.animationName = 'card-float';
-                }
+                let currentTransform = card.style.transform.replace(/rotate[XY]\([^)]+\)/g, '').trim(); // Remove rotações antigas
+                card.style.transform = `${currentTransform} rotateY(0deg) rotateX(0deg)`;
              });
         });
     }
@@ -247,7 +242,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const particles = document.querySelectorAll('.particle');
         particles.forEach((particle, index) => {
             const speed = (index % 3 + 1) * 0.1;
-            particle.style.transform += ` translateY(${scrolled * speed}px)`;
+            // Adiciona o translate Y ao transform existente
+             let currentTransform = particle.style.transform.replace(/translateY\([^)]+\)/g, '').trim();
+             particle.style.transform = `${currentTransform} translateY(${scrolled * speed}px)`;
         });
     });
 
@@ -295,6 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
     photoFrames.forEach((frame, index) => {
         frame.addEventListener('mouseenter', () => {
             hoveredPhotos.add(index);
+            // Atualiza a contagem total de fotos dinamicamente
             if (hoveredPhotos.size === photoFrames.length && !achievements.allPhotosHovered) {
                 achievements.allPhotosHovered = true;
                 showAchievement('📸 Guardião de Memórias!', 'Você visitou todas as nossas lembranças');
@@ -340,7 +338,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Garante que o texto está vazio e o cursor visível
         typingSubtitle.innerHTML = "";
-        typingSubtitle.style.borderRight = "2px solid var(--silver)";
+        typingSubtitle.style.borderRight = "2px solid var(--silver)"; // Garante que comece com o cursor
+        typingSubtitle.style.animation = "typing-blink 0.7s step-end infinite"; // Garante animação do cursor
 
         let intervalId = setInterval(() => {
             if (index < text.length) {
@@ -348,9 +347,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 index++;
             } else {
                 clearInterval(intervalId);
-                // Remove o cursor piscando e mantém só o texto
-                typingSubtitle.style.borderRight = "none";
-                typingSubtitle.style.animationName = "pulse-text"; // Retoma a animação de pulso
+                // Mantém o texto, mas remove o cursor e a animação de piscar
+                 setTimeout(() => { // Pequeno delay para o cursor 'sumir'
+                    typingSubtitle.style.borderRight = "none";
+                    typingSubtitle.style.animation = "pulse-text 3s ease-in-out infinite"; // Retoma a animação de pulso
+                 }, 500); 
             }
         }, 70); // Velocidade da digitação (70ms)
     }
@@ -424,7 +425,15 @@ function createTeAmoAnimation() {
             
             teAmo.style.left = `${startX}px`;
             teAmo.style.top = `${startY}px`;
-            teAmo.style.fontSize = `${Math.random() * 2 + 1.5}rem`;
+            
+            // --- CORREÇÃO DO TAMANHO NO CELULAR ---
+            const isMobile = window.innerWidth < 768;
+            const fontSize = isMobile 
+                                ? Math.random() * 0.8 + 0.9  // Aleatório entre 0.9rem e 1.7rem no celular
+                                : Math.random() * 2 + 1.5;   // Aleatório entre 1.5rem e 3.5rem no desktop
+            teAmo.style.fontSize = `${fontSize}rem`;
+            // --- FIM DA CORREÇÃO ---
+            
             teAmo.style.color = Math.random() > 0.5 ? 'var(--light-blue)' : 'var(--gold)';
             
             document.body.appendChild(teAmo);
