@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Minha Princesa 🤍</title>
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <button id="playButton" class="surprise-btn">Clique para Entrar 🤍</button>
+    </div>
+
+    <audio id="bg-music" loop src="musica.mp3"></audio>
+
+    <div class="custom-cursor"></div>
+
+    <div class="particles"></div>
+    
+    <div class="wave-bg"></div>
+
+    <div class="container">
+        <header class="header">
+            <h1>Em homenagem ao nosso primeiro mês de namoro</h1>
+            <p id="typing-subtitle"></p>
+        </header>
+
+        <main class="love-card">
+            <h2>Minha Alma Gêmea 💕</h2>
+            <div class="love-message">
+                <p><span class="girlfriend-name"></span>, você é a razão do meu despertar feliz e do meu último pensamento antes de dormir. Desde que você chegou na minha vida, cada dia se tornou mais colorido, mais doce, mais completo.</p>
+                <br>
+                <p>Você é minha melodia favorita, meu porto seguro, minha inspiração diária. Com você descobri que o amor verdadeiro não é apenas um sentimento, é um lar, é paz, é a certeza de que encontrei a MINHA pessoa para sempre! <span class="heart-beat">🤍</span></p>
+            </div>
+
+            <button class="surprise-btn" id="surpriseBtn">
+                ✨ Uma Surpresa Especial Para Você ✨
+            </button>
+
+            <div class="special-message" id="specialMessage">
+                <h3>💖 Do Fundo Do Meu Coração 💖</h3>
+                <p><span class="girlfriend-name"></span>, você é o presente mais lindo que Deus me deu. Minha resposta de oração mais bela. Cada sorriso seu ilumina meu mundo, cada abraço seu me faz sentir em casa, cada "eu te amo" seu é música para minha alma.</p>
+                <br>
+                <p>Obrigado por ser a namorada dos meus sonhos, minha parceira de vida, minha melhor amiga e meu grande amor. Que este seja o primeiro de infinitos meses ao seu lado. Eu mal posso esperar para construir nossa vida juntos. 💝</p>
+            </div>
+        </main>
+
+        <section class="photo-gallery">
+            <div class="photo-frame">
+                <img src="img/1.jpeg" alt="Nossa primeira foto juntos" onerror="this.style.display='none'; this.parentNode.innerHTML='📸<br><small>Foto 1</small>'; this.parentNode.setAttribute('data-fallback', 'true');">
+            </div>
+            <div class="photo-frame">
+                <img src="img/2.jpeg" alt="Momento especial" onerror="this.style.display='none'; this.parentNode.innerHTML='💕<br><small>Foto 2</small>'; this.parentNode.setAttribute('data-fallback', 'true');">
+            </div>
+            <div class="photo-frame">
+                <img src="img/3.jpeg" alt="Lembrança querida" onerror="this.style.display='none'; this.parentNode.innerHTML='🌹<br><small>Foto 3</small>'; this.parentNode.setAttribute('data-fallback', 'true');">
+            </div>
+            <div class="photo-frame">
+                <img src="img/4.jpeg" alt="Nosso amor" onerror="this.style.display='none'; this.parentNode.innerHTML='✨<br><small>Foto 4</small>'; this.parentNode.setAttribute('data-fallback', 'true');">
+            </div>
+            <div class="photo-frame">
+                <img src="img/5.jpeg" alt="Momento único" onerror="this.style.display='none'; this.parentNode.innerHTML='💖<br><small>Foto 5</small>'; this.parentNode.setAttribute('data-fallback', 'true');">
+            </div>
+            <div class="photo-frame">
+                <img src="img/6.jpeg" alt="Para sempre" onerror="this.style.display='none'; this.parentNode.innerHTML='🥰<br><small>Foto 6</small>'; this.parentNode.setAttribute('data-fallback', 'true');">
+            </div>
+            
+            <div class="photo-frame">
+                <img src="img/7.jpeg" alt="Nova descrição aqui" onerror="this.style.display='none'; this.parentNode.innerHTML='📸<br><small>Foto 7</small>'; this.parentNode.setAttribute('data-fallback', 'true');">
+            </div>
+            <div class="photo-frame">
+                <img src="img/8.jpeg" alt="Outra descrição" onerror="this.style.display='none'; this.parentNode.innerHTML='💖<br><small>Foto 8</small>'; this.parentNode.setAttribute('data-fallback', 'true');">
+            </div>
+            <div class="photo-frame">
+                <img src="img/9.jpeg" alt="Mais uma descrição" onerror="this.style.display='none'; this.parentNode.innerHTML='✨<br><small>Foto 9</small>'; this.parentNode.setAttribute('data-fallback', 'true');">
+            </div>
+        </section>
+
+    <footer class="footer">
+    <p>
+        Meu amor, que este seja o primeiro de incontáveis meses ao seu lado. 
+        Você tornou meus dias muito mais felizes! Meu maior desejo é que você seja minha primeira e única namorada...
+    </p>
+    <p>
+        ...um lugar que só desejo que mude no dia em que você se tornar minha esposa. <span class="heart-beat">🤍</span>
+    </p>
+    <p>
+        Inspirado pelo amor descrito em Efésios 5:28, prometo cuidar de você e te amar todos os dias, assim como Cristo amou a Igreja. 
+    </p>
+    </footer>
+    <footer class="footer">
+     <p>Criado com todo amor do universo para a princesa mais especial do mundo! 💫</p>
+    <p>Feliz 1º mês de namoro, meu amor! 💑</p>
+    <p>
+        Eu te amo muito, princesa! <span class="heart-beat">🤍</span><span id="hiddenHeart">.</span>
+    </p>
+</footer>
+        
+    </div> <div class="sound-visualizer" id="soundVisualizer"></div>
+    <div class="our-song" id="ourSong">
+        🎶 Nossa Música: <br><span>Nome da Música - Artista</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

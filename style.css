@@ -1,0 +1,1091 @@
+/* ARQUIVO: style.css */
+
+/* Importação da Fonte */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+
+/* ================================================================
+VARIÁVEIS DE COR E CONFIGURAÇÕES GLOBAIS
+================================================================ */
+:root {
+    --primary-black: #0a0a0a;
+    --secondary-black: #1a1a1a;
+    --card-black: #111111;
+    
+    /* Paleta principal (Azul/Dourado) */
+    --accent-blue: #1100ff;
+    --deep-blue: #0058cc;
+    --dark-blue: #000399;
+    --neon-blue: #4117ff;
+    --light-blue: #007bff;
+    --blue-shadow: rgba(0, 123, 255, 0.6);
+    
+    --gold: #ffd700;
+    --gold-shadow: rgba(255, 215, 0, 0.6);
+    
+    /* Neutros */
+    --silver: #c0c0c0;
+    --white: #ffffff;
+    
+    /* Efeitos de Vidro */
+    --glass-bg: rgba(17, 17, 17, 0.8);
+    --glass-border: rgba(0, 26, 255, 0.3);
+    
+    /* Variável para o nome - MUDE AQUI! */
+    --girlfriend-name: "Sophia"; /* ← COLOQUE O NOME AQUI */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, var(--primary-black) 0%, var(--secondary-black) 50%, #0a0c2a 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    /* opacity: 0; <-- REMOVIDO DAQUI */
+}
+
+/* Otimização de Performance para Animações */
+.love-card, .photo-frame, .particle, .wave-bg {
+    will-change: transform, opacity;
+}
+
+/* ================================================================
+EFEITOS DE FUNDO (CURSOR, PARTÍCULAS, ONDAS)
+================================================================ */
+
+/* Cursor personalizado */
+@media (pointer: fine) { /* Só aplica em dispositivos com mouse */
+    body {
+        cursor: none;
+    }
+
+    .custom-cursor {
+        position: fixed;
+        width: 20px;
+        height: 20px;
+        background: radial-gradient(circle, var(--accent-blue), var(--deep-blue));
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 10001; /* Acima de tudo */
+        transition: transform 0.1s ease;
+        box-shadow: 0 0 20px var(--accent-blue);
+        border: 2px solid var(--neon-blue);
+    }
+
+    .cursor-trail {
+        position: fixed;
+        width: 6px;
+        height: 6px;
+        background: rgba(17, 0, 255, 0.6);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 10000;
+        transition: opacity 1s linear;
+    }
+}
+
+/* Partículas */
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: radial-gradient(circle, var(--accent-blue), transparent);
+    border-radius: 50%;
+    animation: float-particle 8s linear infinite;
+}
+
+@keyframes float-particle {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+
+/* Efeito de ondas */
+.wave-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(0, 38, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0, 20, 204, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(0, 36, 153, 0.1) 0%, transparent 50%);
+    animation: wave-move 10s ease-in-out infinite;
+    z-index: 2;
+}
+
+@keyframes wave-move {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.2) rotate(3deg); }
+}
+
+/* ================================================================
+TELA DE LOADING (MELHORADA)
+================================================================ */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-black), var(--secondary-black));
+    z-index: 10000;
+    display: flex;
+    flex-direction: column; /* Para centralizar o botão */
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1s ease-in-out;
+}
+
+/* Animação para o botão de loading */
+.loading-overlay .surprise-btn {
+    animation: btn-pulse 2s ease-in-out infinite;
+    font-size: 1.5rem;
+    margin: 0; /* <-- CORREÇÃO DO BOTÃO PRESO */
+}
+
+@keyframes fadeOut {
+    to { 
+        opacity: 0; 
+        visibility: hidden; 
+    }
+}
+
+/* ================================================================
+CONTEÚDO PRINCIPAL (HEADER, CARD, GALERIA)
+================================================================ */
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 10;
+    opacity: 0; /* <-- CORREÇÃO FADE-IN (COMEÇA INVISÍVEL) */
+    transition: opacity 2s ease; /* <-- TEMPO DO FADE-IN (AUMENTADO) */
+}
+
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: 60px;
+    position: relative;
+    animation: slideDown 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--gold), var(--accent-blue));
+    border-radius: 2px;
+    animation: glow-line 3s ease-in-out infinite alternate;
+}
+
+@keyframes glow-line {
+    0% { box-shadow: 0 0 5px var(--accent-blue); }
+    100% { box-shadow: 0 0 25px var(--accent-blue), 0 0 35px var(--neon-blue); }
+}
+
+.header h1 {
+    font-size: 4.5rem;
+    font-weight: 800;
+    background: linear-gradient(45deg, var(--accent-blue), var(--gold), var(--neon-blue), var(--silver));
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-shift 4s ease infinite, text-glow 2s ease-in-out infinite alternate;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+@keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes text-glow {
+    0% { filter: drop-shadow(0 0 10px var(--accent-blue)); }
+    100% { filter: drop-shadow(0 0 25px var(--accent-blue)) drop-shadow(0 0 35px var(--neon-blue)); }
+}
+
+.header p {
+    font-size: 1.4rem;
+    color: var(--silver);
+    font-weight: 300;
+    letter-spacing: 1px;
+    animation: pulse-text 3s ease-in-out infinite;
+}
+
+/* Efeito de "typing" para o subtítulo */
+#typing-subtitle {
+    /* Simula o cursor da máquina de escrever */
+    border-right: 2px solid var(--silver);
+    white-space: nowrap; /* Mantém em linha única */
+    overflow: hidden; /* Esconde o texto que ainda não foi "digitado" */
+    animation: 
+        pulse-text 3s ease-in-out infinite, /* Animação que já existia */
+        typing-blink 0.7s step-end infinite; /* Nova animação do cursor piscando */
+}
+
+/* Animação do cursor piscando */
+@keyframes typing-blink {
+    from, to { border-color: transparent; }
+    50% { border-color: var(--silver); }
+}
+
+
+@keyframes pulse-text {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
+
+/* Nome da namorada (usado por JS) */
+.girlfriend-name::before {
+    content: var(--girlfriend-name);
+}
+
+/* Card Principal */
+.love-card {
+    background: linear-gradient(135deg, 
+        rgba(17, 17, 17, 0.95) 0%, 
+        rgba(26, 26, 26, 0.9) 50%, 
+        rgba(17, 17, 17, 0.95) 100%);
+    backdrop-filter: blur(30px);
+    border-radius: 25px;
+    padding: 50px 40px;
+    margin: 40px 0;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.8),
+        inset 0 1px 0 rgba(0, 4, 255, 0.3),
+        0 0 40px rgba(4, 0, 255, 0.15),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(76, 0, 255, 0.4);
+    animation: card-float 8s ease-in-out infinite;
+    text-align: center;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.love-card:hover {
+    transform: translateY(-5px) scale(1.01);
+    box-shadow: 
+        0 30px 80px rgba(0, 0, 0, 0.9),
+        inset 0 1px 0 rgba(17, 0, 255, 0.4),
+        0 0 60px rgba(0, 60, 255, 0.514),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+    border-color: rgba(0, 4, 255, 0.6);
+}
+
+@keyframes card-float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+}
+
+.love-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(17, 0, 255, 0.13) 0%, 
+        transparent 30%, 
+        transparent 70%, 
+        rgba(4, 0, 255, 0.192) 100%);
+    border-radius: 25px;
+    z-index: -1;
+    animation: subtle-glow 6s ease-in-out infinite alternate;
+}
+
+@keyframes subtle-glow {
+    0% { opacity: 0.3; }
+    100% { opacity: 0.6; }
+}
+
+.love-card h2 {
+    font-size: 3.2rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, var(--white), var(--silver), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 40px;
+    animation: title-shine 2s ease-in-out infinite;
+}
+
+@keyframes title-shine {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.3); }
+}
+
+.love-message {
+    font-size: 1.4rem;
+    line-height: 1.8;
+    color: var(--silver);
+    margin-bottom: 50px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    animation: message-glow 4s ease-in-out infinite alternate;
+}
+
+@keyframes message-glow {
+    0% { text-shadow: 0 0 10px rgba(192, 192, 192, 0.3); }
+    /* Trocado brilho vermelho por azul */
+    100% { text-shadow: 0 0 20px rgba(192, 192, 192, 0.6), 0 0 30px var(--blue-shadow); }
+}
+
+/* Botão da Surpresa */
+.surprise-btn {
+    background: linear-gradient(45deg, var(--accent-blue), var(--deep-blue));
+    color: var(--white);
+    border: none;
+    padding: 25px 50px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    border-radius: 60px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    margin: 40px 0;
+    box-shadow: 
+        0 15px 35px rgba(0, 4, 255, 0.4),
+        inset 0 1px 0 rgba(2, 38, 201, 0.425);
+    animation: btn-pulse 3s ease-in-out infinite;
+    border: 2px solid var(--neon-blue);
+}
+
+.surprise-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--gold-shadow), transparent);
+    transition: left 0.5s;
+}
+
+.surprise-btn:hover::before {
+    left: 100%;
+}
+
+.surprise-btn:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 
+        0 25px 50px rgba(0, 60, 255, 0.6),
+        0 0 30px var(--gold);
+}
+
+@keyframes btn-pulse {
+    0%, 100% { box-shadow: 0 15px 35px rgba(17, 0, 255, 0.4); }
+    50% { box-shadow: 0 15px 35px rgba(0, 89, 255, 0.6), 0 0 20px var(--gold); }
+}
+
+/* Galeria de fotos */
+.photo-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin: 60px 0;
+    perspective: 1000px;
+}
+
+.photo-frame {
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, 
+        var(--card-black) 0%, 
+        var(--secondary-black) 50%, 
+        var(--card-black) 100%);
+    border-radius: 20px;
+    padding: 8px;
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.8),
+        inset 0 1px 0 rgba(0, 102, 255, 0.3),
+        0 0 25px rgba(0, 89, 255, 0.24);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    animation: frame-float 5s ease-in-out infinite;
+    border: 1px solid rgba(0, 38, 255, 0.4);
+}
+
+.photo-frame:nth-child(1) { animation-delay: 0s; }
+.photo-frame:nth-child(2) { animation-delay: 0.3s; }
+.photo-frame:nth-child(3) { animation-delay: 0.6s; }
+.photo-frame:nth-child(4) { animation-delay: 0.9s; }
+.photo-frame:nth-child(5) { animation-delay: 1.2s; }
+.photo-frame:nth-child(6) { animation-delay: 1.5s; }
+
+@keyframes frame-float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+}
+
+.photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+    transition: all 0.4s ease;
+    filter: brightness(0.95) contrast(1.15) saturate(1.1);
+}
+
+.photo-frame::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(25, 0, 255, 0.2) 0%, 
+        transparent 50%, 
+        rgba(55, 0, 255, 0.2) 100%);
+    border-radius: 20px;
+    opacity: 0;
+    transition: all 0.4s ease;
+    z-index: 1;
+}
+
+.photo-frame:hover::before {
+    opacity: 1;
+    animation: photo-shine 1s ease-in-out;
+}
+
+@keyframes photo-shine {
+    0% { transform: translateX(-100%) skew(-15deg); }
+    100% { transform: translateX(100%) skew(-15deg); }
+}
+
+.photo-frame:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.9),
+        0 0 40px rgba(38, 0, 255, 0.4),
+        inset 0 1px 0 rgba(0, 47, 255, 0.5);
+    border-color: rgba(0, 102, 255, 0.8);
+}
+
+.photo-frame:hover img {
+    filter: brightness(1.1) contrast(1.25) saturate(1.2);
+    transform: scale(1.02);
+}
+
+/* Texto de fallback (quando a imagem falha) */
+.photo-frame[data-fallback="true"] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: var(--accent-blue);
+    text-align: center;
+    background: linear-gradient(135deg, 
+        rgba(17, 17, 17, 0.9) 0%, 
+        rgba(26, 26, 26, 0.95) 50%, 
+        rgba(17, 17, 17, 0.9) 100%);
+}
+
+.photo-frame[data-fallback="true"] small {
+    font-size: 0.7rem;
+    color: var(--silver);
+    margin-top: 8px;
+    opacity: 0.8;
+}
+
+/* Mensagem especial (surpresa) */
+.special-message {
+    background: var(--glass-bg);
+    backdrop-filter: blur(25px);
+    border-radius: 25px;
+    padding: 50px;
+    margin: 60px 0;
+    border: 2px solid var(--glass-border);
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+    transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    position: relative;
+    overflow: hidden;
+    max-height: 0; /* Começa fechado */
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.special-message::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(0, 47, 255, 0.1), 
+        rgba(255, 215, 0, 0.1), 
+        transparent);
+    animation: message-wave 4s ease-in-out infinite;
+}
+
+@keyframes message-wave {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.special-message.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.7),
+        0 0 40px rgba(0, 89, 255, 0.2);
+    /* Anima a abertura */
+    max-height: 1000px; /* Valor alto para caber o texto */
+    padding: 50px;
+    margin: 60px 0;
+}
+
+.special-message h3 {
+    background: linear-gradient(45deg, var(--accent-blue), var(--gold), var(--neon-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
+    animation: special-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes special-glow {
+    0% { filter: brightness(1); }
+    100% { filter: brightness(1.3) drop-shadow(0 0 10px var(--accent-blue)); }
+}
+
+.special-message p {
+    color: var(--silver);
+    font-size: 1.3rem;
+    line-height: 1.8;
+    text-align: center;
+    font-weight: 300;
+}
+
+/* ================================================================
+RODAPÉ E ELEMENTOS DA INTERFACE (MÚSICA, NOTIFICAÇÕES)
+================================================================ */
+
+.footer {
+    text-align: center;
+    padding: 60px 0;
+    color: var(--silver);
+    font-size: 1.3rem;
+    position: relative;
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--gold), var(--accent-blue));
+    border-radius: 1px;
+    animation: footer-line 3s ease-in-out infinite alternate;
+}
+
+@keyframes footer-line {
+    0% { width: 100px; opacity: 0.5; }
+    100% { width: 300px; opacity: 1; }
+}
+
+.heart-beat {
+    color: var(--accent-blue);
+    animation: mega-heartbeat 1s ease-in-out infinite;
+    font-size: 2rem;
+    display: inline-block;
+    filter: drop-shadow(0 0 10px var(--accent-blue));
+}
+
+@keyframes mega-heartbeat {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.3) rotate(5deg); }
+    50% { transform: scale(1.1) rotate(-5deg); }
+    75% { transform: scale(1.2) rotate(3deg); }
+}
+
+/* Easter Egg (Coração Secreto) */
+#hiddenHeart {
+    opacity: 0; /* Invisível */
+    cursor: pointer;
+    padding: 5px; /* Aumenta área de clique */
+    user-select: none; /* Não pode ser selecionado */
+}
+
+/* Display "Nossa Música" */
+.our-song {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(17, 17, 17, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    color: var(--silver);
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 300;
+    z-index: 999;
+    opacity: 0; /* Começa escondido */
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+.our-song span {
+    font-weight: 600;
+    color: var(--white);
+    filter: drop-shadow(0 0 5px var(--gold));
+}
+.our-song.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Visualizador de Som */
+.sound-visualizer {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    align-items: flex-end;
+    z-index: 1000;
+    gap: 2px;
+    height: 60px; /* Define uma altura */
+    pointer-events: none;
+}
+
+.sound-visualizer div { /* Estilo para as barras criadas por JS */
+    width: 4px;
+    background: linear-gradient(to top, var(--light-blue), var(--gold));
+    border-radius: 2px;
+    animation: sound-wave 0.5s ease-in-out infinite alternate;
+    box-shadow: 0 0 10px var(--gold-shadow);
+}
+
+@keyframes sound-wave {
+    0% { height: 10px; }
+    100% { height: 50px; }
+}
+
+/* ================================================================
+EFEITOS DINÂMICOS (EXPLOSÕES, "TE AMO", NOTIFICAÇÕES)
+================================================================ */
+
+/* Efeitos de explosão de coração */
+.heart-explosion {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    font-size: 2rem;
+    animation: heart-explode 2s ease-out forwards;
+}
+
+@keyframes heart-explode {
+    0% { transform: scale(0) rotate(0deg); opacity: 1; }
+    50% { transform: scale(1.5) rotate(180deg); opacity: 1; }
+    100% { transform: scale(0.5) rotate(360deg); opacity: 0; }
+}
+
+/* Efeito de clique */
+.ripple-effect {
+    position: fixed;
+    border: 2px solid var(--light-blue);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    animation: ripple-effect 0.8s ease-out forwards;
+    box-shadow: 0 0 20px var(--blue-shadow);
+}
+
+@keyframes ripple-effect {
+    0% { transform: scale(0); opacity: 1; }
+    100% { transform: scale(4); opacity: 0; }
+}
+
+/* Animação "TE AMO" Principal */
+.te-amo-main {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4rem;
+    font-weight: bold;
+    background: linear-gradient(45deg, var(--light-blue), var(--gold), var(--light-blue));
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    z-index: 9999;
+    pointer-events: none;
+    animation: te-amo-main 4s ease-out forwards;
+    text-shadow: 0 0 30px var(--gold-shadow);
+    filter: drop-shadow(0 0 20px var(--blue-shadow));
+}
+
+@keyframes te-amo-main {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); background-position: 0% 50%; }
+    20% { opacity: 1; transform: translate(-50%, -50%) scale(1.5) rotate(5deg); background-position: 100% 50%; }
+    40% { transform: translate(-50%, -50%) scale(1.2) rotate(-3deg); background-position: 0% 50%; }
+    60% { transform: translate(-50%, -50%) scale(1.3) rotate(2deg); background-position: 100% 50%; }
+    80% { transform: translate(-50%, -50%) scale(1.1) rotate(0deg); background-position: 0% 50%; }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.5) rotate(0deg); background-position: 100% 50%; }
+}
+
+/* Animação "TE AMO" Flutuante */
+.te-amo-float {
+    position: fixed;
+    font-weight: bold;
+    z-index: 9998;
+    pointer-events: none;
+    animation: te-amo-float 3s ease-out forwards;
+    text-shadow: 0 0 15px var(--blue-shadow);
+    filter: drop-shadow(0 0 10px var(--gold-shadow));
+}
+
+@keyframes te-amo-float {
+    0% { opacity: 0; transform: scale(0) rotate(0deg); }
+    20% { opacity: 1; transform: scale(1.2) rotate(10deg); }
+    50% { opacity: 1; transform: scale(1) rotate(-5deg) translateY(-20px); }
+    80% { opacity: 1; transform: scale(1.1) rotate(5deg) translateY(-40px); }
+    100% { opacity: 0; opacity: 0; transform: scale(0.5) rotate(0deg) translateY(-60px); }
+}
+
+/* Animação Chuva de "TE AMO" */
+.te-amo-rain {
+    position: fixed;
+    font-size: 1.2rem;
+    color: var(--light-blue);
+    z-index: 9997;
+    pointer-events: none;
+    animation: te-amo-rain 5s linear forwards;
+    text-shadow: 0 0 10px var(--blue-shadow);
+}
+
+@keyframes te-amo-rain {
+    0% { opacity: 0; transform: translateY(-50px) rotate(0deg) scale(0.8); }
+    10% { opacity: 1; transform: translateY(0px) rotate(10deg) scale(1); }
+    90% { opacity: 1; transform: translateY(calc(100vh - 100px)) rotate(-10deg) scale(0.9); }
+    100% { opacity: 0; transform: translateY(100vh) rotate(0deg) scale(0.5); }
+}
+
+/* Animação Pulso de Amor */
+.love-pulse-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, var(--blue-shadow), transparent);
+    z-index: 9996;
+    pointer-events: none;
+    animation: love-pulse 2s ease-in-out;
+}
+
+@keyframes love-pulse {
+    0% { opacity: 0; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+    100% { opacity: 0; transform: scale(1.5); }
+}
+
+/* Notificações */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(45deg, var(--light-blue), var(--gold));
+    color: white;
+    padding: 15px 25px;
+    border-radius: 25px;
+    font-weight: 600;
+    z-index: 9999;
+    box-shadow: 0 10px 30px var(--blue-shadow);
+    animation: notification-slide 4s ease-in-out forwards;
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--gold-shadow);
+}
+
+@keyframes notification-slide {
+    0% { transform: translateX(100%); opacity: 0; }
+    10%, 90% { transform: translateX(0); opacity: 1; }
+    100% { transform: translateX(100%); opacity: 0; }
+}
+
+/* Conquistas (Achievements) */
+.achievement {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(45deg, var(--light-blue), var(--gold));
+    color: white;
+    padding: 20px 30px;
+    border-radius: 15px;
+    text-align: center;
+    z-index: 10000; /* Acima de quase tudo */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    animation: achievement-popup 3s ease-in-out forwards;
+    backdrop-filter: blur(10px);
+    border: 2px solid var(--gold-shadow);
+}
+
+@keyframes achievement-popup {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
+    10% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+    20% { transform: translate(-50%, -50%) scale(1); }
+    80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.7); }
+}
+
+/* ================================================================
+NOVO MODO ROMÂNTICO (EASTER EGG)
+(Substituindo o antigo "Ultra Dark")
+================================================================ */
+.ultra-dark-text {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    font-weight: bold;
+    background: linear-gradient(45deg, var(--light-blue), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    z-index: 10001; /* Acima de tudo */
+    pointer-events: none;
+    animation: ultra-text 3s ease-out forwards;
+    text-shadow: 0 0 20px var(--gold-shadow);
+}
+
+@keyframes ultra-text {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(0deg); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2) rotate(5deg); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(-5deg); }
+}
+
+.romance-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Gradiente Dourado suave vindo do centro */
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.4), transparent 70%);
+    z-index: 9998; /* Abaixo do texto, acima do site */
+    pointer-events: none;
+    /* Faz ele pulsar 2 vezes em 3 segundos */
+    animation: romance-pulse 1.5s ease-in-out 2; 
+}
+            
+@keyframes romance-pulse {
+    0% { opacity: 0; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+    100% { opacity: 0; transform: scale(1.5); }
+}
+
+
+/* ================================================================
+ANIMAÇÕES DE ENTRADA E RESPONSIVO
+================================================================ */
+
+/* Animações de entrada */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-in {
+    animation: slideUp 0.8s ease-out forwards;
+}
+
+/* Responsivo (Mobile First) */
+@media (max-width: 480px) {
+    .header h1 { 
+        font-size: 2.8rem; 
+        margin-bottom: 15px;
+    }
+    .header p, #typing-subtitle { 
+        font-size: 1.1rem; 
+    }
+    .love-card { 
+        padding: 30px 20px; 
+        margin: 30px 0;
+        border-radius: 20px;
+    }
+    .love-card h2 { 
+        font-size: 2.2rem; 
+        margin-bottom: 25px;
+    }
+    .love-message { 
+        font-size: 1.1rem; 
+        margin-bottom: 30px;
+    }
+    .surprise-btn {
+        padding: 18px 35px;
+        font-size: 1.2rem;
+    }
+    .loading-overlay .surprise-btn {
+        font-size: 1.2rem; /* Ajusta o botão de loading */
+    }
+    .photo-gallery { 
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px; 
+        margin: 40px 0;
+    }
+    .photo-frame {
+        border-radius: 15px;
+        padding: 6px;
+    }
+    .photo-frame img {
+        border-radius: 10px;
+    }
+    .photo-frame[data-fallback="true"] {
+        font-size: 1.5rem;
+    }
+    .photo-frame[data-fallback="true"] small {
+        font-size: 0.6rem;
+        margin-top: 5px;
+    }
+    .special-message {
+        padding: 30px 20px;
+        border-radius: 20px;
+    }
+    .special-message.show {
+        padding: 30px 20px;
+    }
+    .special-message h3 {
+        font-size: 2rem;
+    }
+    .special-message p {
+        font-size: 1.1rem;
+    }
+    .our-song { /* Reposiciona o display de música */
+        left: 20px;
+        bottom: 80px; /* Acima do visualizador */
+        right: auto;
+    }
+    .ultra-dark-text, .te-amo-main {
+        font-size: 2.5rem; /* Diminui textos grandes */
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .header h1 { 
+        font-size: 3.5rem; 
+    }
+    .love-card { 
+        padding: 50px 35px; 
+    }
+    .love-card h2 { 
+        font-size: 2.8rem; 
+    }
+    .photo-gallery { 
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px; 
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .photo-gallery { 
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px; 
+    }
+}
+
+@media (min-width: 1025px) {
+    .photo-gallery { 
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px; 
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+
+/* ================================================================
+OTIMIZAÇÃO DE ACESSIBILIDADE
+================================================================ */
+
+/* Respeita usuários que pedem redução de movimento */
+@media (prefers-reduced-motion: reduce) {
+    /* Desativa a maioria das animações 'infinitas' */
+    .particle, .wave-bg, .header::before, .header h1, .header p, 
+    .love-card, .photo-frame, .surprise-btn, .special-message::before, 
+    .special-message h3, .heart-beat, .loading-heart, .sound-visualizer div, 
+    .custom-cursor, .te-amo-main, .te-amo-float, .te-amo-rain,
+    .romance-overlay, #typing-subtitle { /* Desativa novas animações tbm */
+        animation: none !important;
+    }
+    
+    /* Remove transições que podem ser bruscas */
+    .love-card, .surprise-btn, .photo-frame, .our-song, .custom-cursor, .cursor-trail, .container {
+        transition: none !important;
+    }
+
+    /* Esconde efeitos de fundo que se movem muito */
+    .particles, .wave-bg, .cursor-trail {
+        display: none;
+    }
+
+    /* Garante que elementos escondidos apareçam */
+    .special-message.show {
+        opacity: 1;
+        transform: none;
+        max-height: 1000px;
+        padding: 50px;
+        margin: 60px 0;
+    }
+    .our-song.show {
+        opacity: 1;
+        transform: none;
+    }
+    .container {
+        opacity: 1; /* Garante que o site apareça */
+    }
+    #typing-subtitle {
+        border-right: none; /* Remove o cursor de digitação */
+    }
+}
