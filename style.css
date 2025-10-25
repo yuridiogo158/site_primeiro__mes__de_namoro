@@ -246,9 +246,12 @@ CONTEÚDO PRINCIPAL (HEADER, CARD, GALERIA)
     border-right: 2px solid var(--silver);
     white-space: nowrap; /* Mantém em linha única */
     overflow: hidden; /* Esconde o texto que ainda não foi "digitado" */
+    display: inline-block; /* Necessário para border funcionar bem */
+    vertical-align: bottom; /* Alinha com o texto */
+    /* Animação inicial */
     animation: 
-        pulse-text 3s ease-in-out infinite, /* Animação que já existia */
-        typing-blink 0.7s step-end infinite; /* Nova animação do cursor piscando */
+        typing-blink 0.7s step-end infinite; 
+    /* A animação pulse-text será aplicada via JS após digitar */
 }
 
 /* Animação do cursor piscando */
@@ -435,12 +438,10 @@ CONTEÚDO PRINCIPAL (HEADER, CARD, GALERIA)
     border: 1px solid rgba(0, 38, 255, 0.4);
 }
 
-.photo-frame:nth-child(1) { animation-delay: 0s; }
-.photo-frame:nth-child(2) { animation-delay: 0.3s; }
-.photo-frame:nth-child(3) { animation-delay: 0.6s; }
-.photo-frame:nth-child(4) { animation-delay: 0.9s; }
-.photo-frame:nth-child(5) { animation-delay: 1.2s; }
-.photo-frame:nth-child(6) { animation-delay: 1.5s; }
+/* Remove delay inicial da animação float para as novas fotos */
+.photo-frame:nth-child(n+7) { 
+    animation-delay: 0s; 
+}
 
 @keyframes frame-float {
     0%, 100% { transform: translateY(0px); }
@@ -662,7 +663,7 @@ RODAPÉ E ELEMENTOS DA INTERFACE (MÚSICA, NOTIFICAÇÕES)
     border-radius: 10px;
     font-size: 0.8rem;
     font-weight: 300;
-    z-index: 999;
+    z-index: 1001; /* CORREÇÃO: Acima do visualizador */
     opacity: 0; /* Começa escondido */
     transform: translateY(20px);
     transition: all 0.5s ease;
@@ -685,7 +686,7 @@ RODAPÉ E ELEMENTOS DA INTERFACE (MÚSICA, NOTIFICAÇÕES)
     left: 20px;
     display: flex;
     align-items: flex-end;
-    z-index: 1000;
+    z-index: 999; /* CORREÇÃO: Abaixo do our-song */
     gap: 2px;
     height: 60px; /* Define uma altura */
     pointer-events: none;
@@ -874,10 +875,9 @@ EFEITOS DINÂMICOS (EXPLOSÕES, "TE AMO", NOTIFICAÇÕES)
 }
 
 /* ================================================================
-NOVO MODO ROMÂNTICO (EASTER EGG)
-(Substituindo o antigo "Ultra Dark")
+MODO ROMÂNTICO (EASTER EGG CORRIGIDO)
 ================================================================ */
-.ultra-dark-text {
+.ultra-dark-text { /* Mantendo o nome da classe para reuso */
     position: fixed;
     top: 50%;
     left: 50%;
@@ -941,77 +941,9 @@ ANIMAÇÕES DE ENTRADA E RESPONSIVO
 }
 
 /* Responsivo (Mobile First) */
-@media (max-width: 480px) {
-    .header h1 { 
-        font-size: 2.8rem; 
-        margin-bottom: 15px;
-    }
-    .header p, #typing-subtitle { 
-        font-size: 1.1rem; 
-    }
-    .love-card { 
-        padding: 30px 20px; 
-        margin: 30px 0;
-        border-radius: 20px;
-    }
-    .love-card h2 { 
-        font-size: 2.2rem; 
-        margin-bottom: 25px;
-    }
-    .love-message { 
-        font-size: 1.1rem; 
-        margin-bottom: 30px;
-    }
-    .surprise-btn {
-        padding: 18px 35px;
-        font-size: 1.2rem;
-    }
-    .loading-overlay .surprise-btn {
-        font-size: 1.2rem; /* Ajusta o botão de loading */
-    }
-    .photo-gallery { 
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px; 
-        margin: 40px 0;
-    }
-    .photo-frame {
-        border-radius: 15px;
-        padding: 6px;
-    }
-    .photo-frame img {
-        border-radius: 10px;
-    }
-    .photo-frame[data-fallback="true"] {
-        font-size: 1.5rem;
-    }
-    .photo-frame[data-fallback="true"] small {
-        font-size: 0.6rem;
-        margin-top: 5px;
-    }
-    .special-message {
-        padding: 30px 20px;
-        border-radius: 20px;
-    }
-    .special-message.show {
-        padding: 30px 20px;
-    }
-    .special-message h3 {
-        font-size: 2rem;
-    }
-    .special-message p {
-        font-size: 1.1rem;
-    }
-    .our-song { /* Reposiciona o display de música */
-        left: 20px;
-        bottom: 80px; /* Acima do visualizador */
-        right: auto;
-    }
-    .ultra-dark-text, .te-amo-main {
-        font-size: 2.5rem; /* Diminui textos grandes */
-    }
-}
 
-@media (min-width: 481px) and (max-width: 768px) {
+/* Regras gerais para celular (até 768px) */
+@media (max-width: 768px) { 
     .header h1 { 
         font-size: 3.5rem; 
     }
@@ -1025,67 +957,35 @@ ANIMAÇÕES DE ENTRADA E RESPONSIVO
         grid-template-columns: repeat(3, 1fr);
         gap: 20px; 
     }
-}
 
-@media (min-width: 769px) and (max-width: 1024px) {
-    .photo-gallery { 
-        grid-template-columns: repeat(3, 1fr);
-        gap: 25px; 
-    }
-}
-
-@media (min-width: 1025px) {
-    .photo-gallery { 
-        grid-template-columns: repeat(3, 1fr);
-        gap: 30px; 
-        max-width: 900px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-}
-
-
-/* ================================================================
-OTIMIZAÇÃO DE ACESSIBILIDADE
-================================================================ */
-
-/* Respeita usuários que pedem redução de movimento */
-@media (prefers-reduced-motion: reduce) {
-    /* Desativa a maioria das animações 'infinitas' */
-    .particle, .wave-bg, .header::before, .header h1, .header p, 
-    .love-card, .photo-frame, .surprise-btn, .special-message::before, 
-    .special-message h3, .heart-beat, .loading-heart, .sound-visualizer div, 
-    .custom-cursor, .te-amo-main, .te-amo-float, .te-amo-rain,
-    .romance-overlay, #typing-subtitle { /* Desativa novas animações tbm */
-        animation: none !important;
-    }
-    
-    /* Remove transições que podem ser bruscas */
-    .love-card, .surprise-btn, .photo-frame, .our-song, .custom-cursor, .cursor-trail, .container {
-        transition: none !important;
-    }
-
-    /* Esconde efeitos de fundo que se movem muito */
-    .particles, .wave-bg, .cursor-trail {
-        display: none;
-    }
-
-    /* Garante que elementos escondidos apareçam */
-    .special-message.show {
-        opacity: 1;
-        transform: none;
-        max-height: 1000px;
-        padding: 50px;
-        margin: 60px 0;
-    }
-    .our-song.show {
-        opacity: 1;
-        transform: none;
-    }
-    .container {
-        opacity: 1; /* Garante que o site apareça */
-    }
+    /* --- CORREÇÕES PARA CELULAR --- */
     #typing-subtitle {
-        border-right: none; /* Remove o cursor de digitação */
+        font-size: 0.9rem; /* Reduzimos mais */
+        white-space: normal; /* FORÇA a quebra de linha se precisar */
+        border-right: none !important; /* Garante que o cursor suma */
+        /* Garante que a animação de pulso continue após digitar */
+        animation-name: pulse-text; 
+        animation-iteration-count: infinite; 
+        animation-timing-function: ease-in-out;
+        animation-duration: 3s;
+        /* Resetando animações não necessárias aqui */
+        animation-delay: 0s; 
+        animation-fill-mode: none; 
     }
+
+    /* Reduz o tamanho do "TE AMO" principal da surpresa */
+    .te-amo-main {
+        font-size: 2.8rem; /* Era 4rem */
+    }
+
+    /* Reduz o tamanho do texto do "Modo Amor Ativado" */
+    .ultra-dark-text {
+        font-size: 1.8rem; /* Era 3rem */
+        white-space: normal; 
+        text-align: center; 
+    }
+    /* --- FIM DAS CORREÇÕES --- */
 }
+
+/* Regras específicas para celulares menores (até 480px) */
+@media
