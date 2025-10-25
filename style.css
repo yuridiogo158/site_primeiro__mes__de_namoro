@@ -1048,12 +1048,17 @@ ANIMAÇÕES DE ENTRADA E RESPONSIVO
     .special-message p {
         font-size: 1.1rem;
     }
-    .our-song { /* Reposiciona o display de música */
-        left: 20px;
-        bottom: 90px; /* CORREÇÃO: Mais espaço */
+    /* --- CORREÇÃO DO NOSSA MÚSICA --- */
+    .our-song { 
+        left: 15px; 
+        bottom: 95px; /* Subimos mais 5px para garantir */
         right: auto;
-        max-width: 70%; /* CORREÇÃO: Limita largura */
+        max-width: 60%; /* Reduzimos mais a largura */
+        padding: 6px 10px; /* Diminuimos mais o padding */
+        font-size: 0.65rem; /* Deixamos a fonte ainda menor */
     }
+    /* --- FIM DA CORREÇÃO --- */
+
     .ultra-dark-text, .te-amo-main {
         font-size: 2.5rem; /* Diminui textos grandes */
     }
@@ -1105,7 +1110,7 @@ OTIMIZAÇÃO DE ACESSIBILIDADE
     }
     
     /* Remove transições que podem ser bruscas */
-    .love-card, .surprise-btn, .photo-frame, .our-song, .custom-cursor, .cursor-trail, .container {
+    .love-card, .surprise-btn, .photo-frame, .our-song, .custom-cursor, .cursor-trail, .container, .special-message {
         transition: none !important;
     }
 
@@ -1131,5 +1136,7 @@ OTIMIZAÇÃO DE ACESSIBILIDADE
     }
     #typing-subtitle {
         border-right: none; /* Remove o cursor de digitação */
+        white-space: normal; /* Garante que o texto apareça */
+        overflow: visible;
     }
 }
