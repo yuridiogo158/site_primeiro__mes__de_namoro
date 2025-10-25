@@ -191,13 +191,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 800); // Tempo limite para o triplo clique
         }
         
-        // Efeito de clique (ripple)
-        const ripple = document.createElement('div');
-        ripple.className = 'ripple-effect';
-        ripple.style.left = `${e.clientX - 25}px`;
-        ripple.style.top = `${e.clientY - 25}px`;
-        document.body.appendChild(ripple);
-        setTimeout(() => ripple.remove(), 800);
+        // Efeito de clique (ripple) - Não ativa se for o 3º clique
+        if (clickCount !== 0) { // Só cria o ripple se não ativou o modo amor
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple-effect';
+            ripple.style.left = `${e.clientX - 25}px`;
+            ripple.style.top = `${e.clientY - 25}px`;
+            document.body.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 800);
+        }
     });
 
     // --- 6. Efeito Parallax 3D (SÓ ATIVA EM DESKTOP) ---
@@ -325,8 +327,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
 
-    // Observar elementos para animação
-    const elementsToAnimate = document.querySelectorAll('.photo-frame, .special-message, .footer');
+    // --- CORREÇÃO: Remover .special-message do observer ---
+    const elementsToAnimate = document.querySelectorAll('.photo-frame, .footer'); 
     elementsToAnimate.forEach(el => observer.observe(el));
     
     // --- 12. NOVA FUNÇÃO: Efeito "Typing" ---
